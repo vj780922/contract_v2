@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>一對一健身教練課程服務契約及健康風險確認書</title>
+  <!-- 引入 html2pdf.js 套件，實現點擊按鈕直接下載 PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <style>
     /* 全局樣式設定 */
     body {
@@ -23,22 +25,17 @@
       border-radius: 8px;
     }
 
-    h1 {
+    /* 統一所有大標題風格（無分隔底線） */
+    h1, h2 {
       text-align: center;
       font-size: 22px;
-      margin-bottom: 20px;
+      font-weight: bold;
+      margin-top: 10px;
+      margin-bottom: 24px;
       color: #111;
       letter-spacing: 1px;
-    }
-
-    h2 {
-      text-align: center;
-      font-size: 18px;
-      margin-top: 25px;
-      margin-bottom: 15px;
-      color: #222;
-      border-bottom: 2px solid #333;
-      padding-bottom: 8px;
+      border: none !important; /* 確保無分隔線 */
+      padding: 0 !important;
     }
 
     p, li {
@@ -49,7 +46,7 @@
 
     .section-title {
       font-weight: bold;
-      margin-top: 14px;
+      margin-top: 16px;
       font-size: 15px;
       color: #000;
     }
@@ -152,7 +149,7 @@
       margin-top: 20px;
       display: flex;
       justify-content: space-between;
-      page-break-inside: avoid; /* 強制簽名區塊保持在同一頁 */
+      page-break-inside: avoid;
       break-inside: avoid;
     }
 
@@ -194,67 +191,36 @@
     }
 
     /* ===================================================
-       列印 / 轉檔 PDF 專屬樣式
+       渲染 PDF 時的專屬優化樣式
        =================================================== */
-    @media print {
-      @page {
-        size: A4;
-        margin: 1.2cm 1.5cm; /* 控制邊距，隱藏瀏覽器預設頁首頁尾資訊 */
-      }
+    .rendering-pdf .action-bar, 
+    .rendering-pdf .btn-clear {
+      display: none !important;
+    }
 
-      body {
-        background-color: #fff;
-        padding: 0;
-      }
+    .rendering-pdf .sig-canvas {
+      display: none !important;
+    }
 
-      .contract-container {
-        box-shadow: none;
-        padding: 0;
-        width: 100%;
-        max-width: 100%;
-      }
+    .rendering-pdf .signature-img {
+      display: inline-block !important;
+    }
 
-      .action-bar, .btn-clear {
-        display: none !important;
-      }
-
-      /* 隱藏 Canvas，改顯示渲染出的簽名圖片 */
-      .sig-canvas {
-        display: none !important;
-      }
-
-      .signature-img {
-        display: inline-block !important;
-      }
-
-      /* 將輸入框轉為無邊框純文字顯示效果 */
-      input[type="text"], input[type="number"], input[type="date"], select {
-        border: none !important;
-        background: transparent !important;
-        appearance: none;
-        -webkit-appearance: none;
-        padding: 0 !important;
-      }
-
-      /* 確保核取方塊與單選鈕在列印時清晰可見 */
-      input[type="checkbox"], input[type="radio"] {
-        appearance: auto !important;
-        -webkit-appearance: checkbox !important;
-      }
-
-      select::-ms-expand { display: none; }
-      
-      /* 防止簽名區域與標題被裁切開來 */
-      .sign-section, .section-title {
-        page-break-inside: avoid;
-        break-inside: avoid;
-      }
+    .rendering-pdf input[type="text"], 
+    .rendering-pdf input[type="number"], 
+    .rendering-pdf input[type="date"], 
+    .rendering-pdf select {
+      border: none !important;
+      background: transparent !important;
+      appearance: none;
+      -webkit-appearance: none;
+      padding: 0 !important;
     }
   </style>
 </head>
 <body>
 
-<div class="contract-container">
+<div class="contract-container" id="pdf-content">
   
   <!-- 第一部分：一對一健身教練課程服務契約 -->
   <h1>一對一健身教練課程服務契約</h1>
@@ -351,7 +317,7 @@
   <div class="section-title">第十三條 契約份數</div>
   <p>本契約一式二份，由甲乙雙方各執一份為憑。</p>
 
-  <!-- 簽署區塊（已設定自動防止跨頁斷開） -->
+  <!-- 簽署欄位 -->
   <div class="sign-section">
     <div class="sign-col">
       <p><strong>甲方（教練）簽名：</strong></p>
@@ -551,7 +517,7 @@
 
 <!-- 固定底部的操作列 -->
 <div class="action-bar">
-  <button type="button" class="btn-submit" onclick="prepareAndPrint()">確認文件並儲存為 PDF</button>
+  <button type="button" class="btn-submit" onclick="generatePDF()">直接下載 PDF 合約書</button>
 </div>
 
 <script>
@@ -639,8 +605,9 @@
   const allCanvasIds = ['sig_c1', 'sig_c2', 'sig_p1', 'sig_p2', 'sig_r1', 'sig_r2'];
   allCanvasIds.forEach(id => initSignatureCanvas(id));
 
-  // 準備列印並開啟瀏覽器另存 PDF 視窗
-  function prepareAndPrint() {
+  // 使用 html2pdf.js 直接產出並下載 PDF 檔
+  function generatePDF() {
+    // 1. 將 Canvas 簽名轉化為圖片
     allCanvasIds.forEach(id => {
       const canvas = document.getElementById(id);
       const img = document.getElementById(id + '_img');
@@ -649,7 +616,25 @@
       }
     });
 
-    window.print();
+    const element = document.getElementById('pdf-content');
+    
+    // 2. 切換成 PDF 渲染模式（觸發 CSS 隱藏按鈕與調成無邊框）
+    document.body.classList.add('rendering-pdf');
+
+    // 3. 設定 PDF 下載參數
+    const opt = {
+      margin:       [10, 15, 10, 15], // [上, 左, 下, 右] mm
+      filename:     '一對一健身教練課程服務契約及健康風險確認書.pdf',
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { scale: 2, useCORS: true, logging: false },
+      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      pagebreak:    { mode: ['css', 'legacy'] }
+    };
+
+    // 4. 執行轉檔與下載，結束後還原網頁狀態
+    html2pdf().set(opt).from(element).save().then(() => {
+      document.body.classList.remove('rendering-pdf');
+    });
   }
 </script>
 
