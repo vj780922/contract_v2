@@ -155,6 +155,11 @@
       width: 48%;
     }
 
+    .sign-col-single {
+      width: 100%;
+      text-align: right;
+    }
+
     .page-break {
       page-break-before: always;
       break-before: page;
@@ -345,7 +350,7 @@
   <div class="section-title">第十三條 契約份數</div>
   <p>本契約一式二份，由甲乙雙方各執一份為憑。</p>
 
-  <!-- 第一部分簽署欄：保留教練（甲方）與學員（乙方）簽名板 -->
+  <!-- 第一部分簽署欄：甲方（教練）與乙方（學員）雙方簽名 -->
   <div class="sign-section">
     <div class="sign-col">
       <p><strong>甲方（教練）簽名：</strong></p>
@@ -461,25 +466,20 @@
     3. 如有疾病、傷病、懷孕或其他可能影響運動安全之情形，本人了解應先向醫師或適當醫療專業人員諮詢。
   </p>
 
-  <!-- 第二部分簽署欄：取消教練簽名，僅留教練確認日期與學員簽名 -->
+  <!-- 第二部分簽署欄：僅留學員簽名 -->
   <div class="sign-section">
-    <div class="sign-col">
-      <p><strong>教練確認日期：</strong></p>
-      <p style="margin-top: 25px;">
-        民國 <input type="number" class="input-short" id="p2_sig_y"> 年 <input type="number" class="input-short" id="p2_sig_m"> 月 <input type="number" class="input-short" id="p2_sig_d"> 日
-      </p>
-    </div>
-
-    <div class="sign-col">
-      <p><strong>學員簽名：</strong></p>
-      <div class="sig-block">
-        <canvas id="sig_p1" class="sig-canvas" width="300" height="100"></canvas>
-        <img id="sig_p1_img" class="signature-img" alt="學員簽名">
-        <button type="button" class="btn-clear" onclick="clearCanvas('sig_p1')">清除重新簽名</button>
+    <div class="sign-col-single">
+      <div style="display: inline-block; text-align: left;">
+        <p><strong>學員簽名：</strong></p>
+        <div class="sig-block">
+          <canvas id="sig_p1" class="sig-canvas" width="300" height="100"></canvas>
+          <img id="sig_p1_img" class="signature-img" alt="學員簽名">
+          <button type="button" class="btn-clear" onclick="clearCanvas('sig_p1')">清除重新簽名</button>
+        </div>
+        <p style="margin-top: 8px;">
+          日期：民國 <input type="number" class="input-short" id="p1_sig_y"> 年 <input type="number" class="input-short" id="p1_sig_m"> 月 <input type="number" class="input-short" id="p1_sig_d"> 日
+        </p>
       </div>
-      <p style="margin-top: 8px;">
-        日期：民國 <input type="number" class="input-short" id="p1_sig_y"> 年 <input type="number" class="input-short" id="p1_sig_m"> 月 <input type="number" class="input-short" id="p1_sig_d"> 日
-      </p>
     </div>
   </div>
 
@@ -511,25 +511,20 @@
     ※ 本確認書不得解釋為學員放棄依法得主張之權利，亦不免除教練依法應負之責任。
   </p>
 
-  <!-- 第三部分簽署欄：取消教練簽名，僅留教練確認日期與學員簽名 -->
+  <!-- 第三部分簽署欄：僅留學員簽名 -->
   <div class="sign-section">
-    <div class="sign-col">
-      <p><strong>教練確認日期：</strong></p>
-      <p style="margin-top: 25px;">
-        民國 <input type="number" class="input-short" id="r2_sig_y"> 年 <input type="number" class="input-short" id="r2_sig_m"> 月 <input type="number" class="input-short" id="r2_sig_d"> 日
-      </p>
-    </div>
-
-    <div class="sign-col">
-      <p><strong>學員簽名：</strong></p>
-      <div class="sig-block">
-        <canvas id="sig_r1" class="sig-canvas" width="300" height="100"></canvas>
-        <img id="sig_r1_img" class="signature-img" alt="學員簽名">
-        <button type="button" class="btn-clear" onclick="clearCanvas('sig_r1')">清除重新簽名</button>
+    <div class="sign-col-single">
+      <div style="display: inline-block; text-align: left;">
+        <p><strong>學員簽名：</strong></p>
+        <div class="sig-block">
+          <canvas id="sig_r1" class="sig-canvas" width="300" height="100"></canvas>
+          <img id="sig_r1_img" class="signature-img" alt="學員簽名">
+          <button type="button" class="btn-clear" onclick="clearCanvas('sig_r1')">清除重新簽名</button>
+        </div>
+        <p style="margin-top: 8px;">
+          日期：民國 <input type="number" class="input-short" id="r1_sig_y"> 年 <input type="number" class="input-short" id="r1_sig_m"> 月 <input type="number" class="input-short" id="r1_sig_d"> 日
+        </p>
       </div>
-      <p style="margin-top: 8px;">
-        日期：民國 <input type="number" class="input-short" id="r1_sig_y"> 年 <input type="number" class="input-short" id="r1_sig_m"> 月 <input type="number" class="input-short" id="r1_sig_d"> 日
-      </p>
     </div>
   </div>
 
@@ -547,9 +542,9 @@
   const month = today.getMonth() + 1;
   const date = today.getDate();
 
-  const yearIds = ['c1_y', 'c2_y', 'parq_y', 'p1_sig_y', 'p2_sig_y', 'risk_y', 'r1_sig_y', 'r2_sig_y'];
-  const monthIds = ['c1_m', 'c2_m', 'parq_m', 'p1_sig_m', 'p2_sig_m', 'risk_m', 'r1_sig_m', 'r2_sig_m'];
-  const dayIds = ['c1_d', 'c2_d', 'parq_d', 'p1_sig_d', 'p2_sig_d', 'risk_d', 'r1_sig_d', 'r2_sig_d'];
+  const yearIds = ['c1_y', 'c2_y', 'parq_y', 'p1_sig_y', 'risk_y', 'r1_sig_y'];
+  const monthIds = ['c1_m', 'c2_m', 'parq_m', 'p1_sig_m', 'risk_m', 'r1_sig_m'];
+  const dayIds = ['c1_d', 'c2_d', 'parq_d', 'p1_sig_d', 'risk_d', 'r1_sig_d'];
 
   yearIds.forEach(id => { if(document.getElementById(id)) document.getElementById(id).value = rocYear; });
   monthIds.forEach(id => { if(document.getElementById(id)) document.getElementById(id).value = month; });
