@@ -64,6 +64,26 @@
     .input-med { width: 120px; }
     .input-long { width: 200px; }
 
+    /* 勾選清單樣式 */
+    .health-checklist {
+      margin: 8px 0;
+      padding-left: 10px;
+    }
+
+    .check-item {
+      display: inline-block;
+      margin-bottom: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .check-item input[type="checkbox"] {
+      transform: scale(1.1);
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+
     /* 簽名板區域 */
     .sig-block {
       display: inline-block;
@@ -157,7 +177,7 @@
         display: none !important;
       }
 
-      /* 隱藏 Canvas，改顯示渲染出的圖片 */
+      /* 隱藏 Canvas，改顯示渲染出的簽名圖片 */
       .sig-canvas {
         display: none !important;
       }
@@ -167,12 +187,18 @@
       }
 
       /* 將輸入框轉為無邊框純文字顯示效果 */
-      input, select {
+      input[type="text"], input[type="number"], input[type="date"], select {
         border: none !important;
         background: transparent !important;
         appearance: none;
         -webkit-appearance: none;
         padding: 0 !important;
+      }
+
+      /* 確保核取方塊與單選鈕在列印時清晰可見 */
+      input[type="checkbox"], input[type="radio"] {
+        appearance: auto !important;
+        -webkit-appearance: checkbox !important;
       }
 
       /* 隱藏下拉選單箭頭 */
@@ -240,10 +266,28 @@
   </p>
 
   <div class="section-title">第四條：健康狀況評估與風險聲明</div>
+  <p><strong>健康狀況評估：</strong>甲方應於簽約前誠實告知乙方其個人健康狀況。請勾選以下符合甲方之情況：</p>
+  
+  <div class="health-checklist">
+    <label class="check-item"><input type="checkbox" name="health" value="cvd"> 1. 心血管疾病 / 高血壓 / 胸悶胸痛歷史</label><br>
+    <label class="check-item"><input type="checkbox" name="health" value="joint"> 2. 骨骼、關節舊傷或脊椎相關問題（如椎間盤突出、習慣性脫臼等）</label><br>
+    <label class="check-item"><input type="checkbox" name="health" value="surgery"> 3. 近期接受過手術或尚在恢復期</label><br>
+    <label class="check-item"><input type="checkbox" name="health" value="pregnant"> 4. 懷孕中或產後復健期</label><br>
+    <label class="check-item"><input type="checkbox" name="health" value="chronic"> 5. 其他慢性疾病（如糖尿病、氣喘、癲癇等）</label><br>
+    <label class="check-item"><input type="checkbox" name="health" value="none"> 6. 無上述狀況，身體健康適合進行體能訓練</label>
+  </div>
+
+  <p style="margin-top: 10px;">
+    <strong>健康狀況詳細說明/備註：</strong>（若有勾選 1~5 項，請簡述狀況或醫師醫囑）<br>
+    <input type="text" class="input-long" style="width: 100%;" id="health_notes" placeholder="無則填寫『無』">
+  </p>
+
   <p>
-    <strong>健康狀況告知：</strong>甲方應於簽約前誠實告知乙方其個人健康狀況（包括但不限於心血管疾病、高血壓、關節舊傷、脊椎問題、懷孕或手術史）。<br>
-    <strong>醫療建議：</strong>若甲方有特殊醫療狀況，應先尋求專業醫師之評估與許可，並提供相關診斷證明。<br>
-    <strong>運動風險：</strong>體能訓練具有一定強度與風險，乙方將依專業進行評估並確保訓練安全。甲方於訓練期間若感到任何不適、疼痛或頭暈，應立即主動告知乙方並停止訓練，切勿勉強。
+    <strong>【風險聲明與確認】</strong><br>
+    <label class="check-item">
+      <input type="checkbox" id="risk_acknowledge" value="agreed">
+      <strong>甲方已充分瞭解：</strong>體能訓練具有一定強度與風險，乙方將依專業進行評估並確保訓練安全。若甲方有特殊醫療狀況，應先尋求專業醫師評估並提供診斷證明。訓練期間若感到任何不適、疼痛或頭暈，甲方應立即主動告知乙方並停止訓練，切勿勉強。
+    </label>
   </p>
 
   <div class="section-title">第五條：合約轉讓與退費條款</div>
@@ -260,8 +304,8 @@
   <p>
     <strong>個人資料保護：</strong>乙方因本合約取得之甲方個人資料及健康數據，僅得用於本課程訓練規劃，未經甲方授權不得洩漏予第三方。<br>
     <strong>肖像權使用（可選）：</strong>乙方於授課期間拍攝之照片或影片：<br>
-    <label><input type="radio" name="portrait" value="agree"> 同意 乙方使用於個人社群媒體或商業宣傳（需隱藏敏感個人資訊）。</label><br>
-    <label><input type="radio" name="portrait" value="disagree" checked> 不同意 乙方公開使用，僅限訓練紀錄用途。</label>
+    <label class="check-item"><input type="radio" name="portrait" value="agree"> 同意 乙方使用於個人社群媒體或商業宣傳（需隱藏敏感個人資訊）。</label><br>
+    <label class="check-item"><input type="radio" name="portrait" value="disagree" checked> 不同意 乙方公開使用，僅限訓練紀錄用途。</label>
   </p>
 
   <div class="section-title">第七條：爭議解決與管轄法院</div>
