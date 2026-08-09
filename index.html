@@ -348,7 +348,7 @@
   <div class="section-title">第十三條 契約份數</div>
   <p>本契約一式二份，由甲乙雙方各執一份為憑。</p>
 
-  <!-- 簽署欄位 -->
+  <!-- 第一部分簽署欄：甲方（前） / 乙方（後） -->
   <div class="sign-section">
     <div class="sign-col">
       <p><strong>甲方（教練）簽名：</strong></p>
@@ -394,7 +394,6 @@
   <div class="section-title">二、健康篩檢</div>
   <p>請依目前或過去的健康狀況勾選：</p>
 
-  <!-- 已取消所有預設勾選 (無 checked) -->
   <table class="parq-table">
     <thead>
       <tr>
@@ -465,19 +464,8 @@
     3. 如有疾病、傷病、懷孕或其他可能影響運動安全之情形，本人了解應先向醫師或適當醫療專業人員諮詢。
   </p>
 
+  <!-- 第二部分簽署欄：教練/甲方（前） / 學員/乙方（後） -->
   <div class="sign-section">
-    <div class="sign-col">
-      <p><strong>學員簽名：</strong></p>
-      <div class="sig-block">
-        <canvas id="sig_p1" class="sig-canvas" width="300" height="100"></canvas>
-        <img id="sig_p1_img" class="signature-img" alt="學員簽名">
-        <button type="button" class="btn-clear" onclick="clearCanvas('sig_p1')">清除重新簽名</button>
-      </div>
-      <p style="margin-top: 8px;">
-        日期：民國 <input type="number" class="input-short" id="p1_sig_y"> 年 <input type="number" class="input-short" id="p1_sig_m"> 月 <input type="number" class="input-short" id="p1_sig_d"> 日
-      </p>
-    </div>
-
     <div class="sign-col">
       <p><strong>教練確認：</strong></p>
       <div class="sig-block">
@@ -487,6 +475,18 @@
       </div>
       <p style="margin-top: 8px;">
         日期：民國 <input type="number" class="input-short" id="p2_sig_y"> 年 <input type="number" class="input-short" id="p2_sig_m"> 月 <input type="number" class="input-short" id="p2_sig_d"> 日
+      </p>
+    </div>
+
+    <div class="sign-col">
+      <p><strong>學員簽名：</strong></p>
+      <div class="sig-block">
+        <canvas id="sig_p1" class="sig-canvas" width="300" height="100"></canvas>
+        <img id="sig_p1_img" class="signature-img" alt="學員簽名">
+        <button type="button" class="btn-clear" onclick="clearCanvas('sig_p1')">清除重新簽名</button>
+      </div>
+      <p style="margin-top: 8px;">
+        日期：民國 <input type="number" class="input-short" id="p1_sig_y"> 年 <input type="number" class="input-short" id="p1_sig_m"> 月 <input type="number" class="input-short" id="p1_sig_d"> 日
       </p>
     </div>
   </div>
@@ -519,19 +519,8 @@
     ※ 本確認書不得解釋為學員放棄依法得主張之權利，亦不免除教練依法應負之責任。
   </p>
 
+  <!-- 第三部分簽署欄：教練/甲方（前） / 學員/乙方（後） -->
   <div class="sign-section">
-    <div class="sign-col">
-      <p><strong>學員簽名：</strong></p>
-      <div class="sig-block">
-        <canvas id="sig_r1" class="sig-canvas" width="300" height="100"></canvas>
-        <img id="sig_r1_img" class="signature-img" alt="學員簽名">
-        <button type="button" class="btn-clear" onclick="clearCanvas('sig_r1')">清除重新簽名</button>
-      </div>
-      <p style="margin-top: 8px;">
-        日期：民國 <input type="number" class="input-short" id="r1_sig_y"> 年 <input type="number" class="input-short" id="r1_sig_m"> 月 <input type="number" class="input-short" id="r1_sig_d"> 日
-      </p>
-    </div>
-
     <div class="sign-col">
       <p><strong>教練簽名：</strong></p>
       <div class="sig-block">
@@ -541,6 +530,18 @@
       </div>
       <p style="margin-top: 8px;">
         日期：民國 <input type="number" class="input-short" id="r2_sig_y"> 年 <input type="number" class="input-short" id="r2_sig_m"> 月 <input type="number" class="input-short" id="r2_sig_d"> 日
+      </p>
+    </div>
+
+    <div class="sign-col">
+      <p><strong>學員簽名：</strong></p>
+      <div class="sig-block">
+        <canvas id="sig_r1" class="sig-canvas" width="300" height="100"></canvas>
+        <img id="sig_r1_img" class="signature-img" alt="學員簽名">
+        <button type="button" class="btn-clear" onclick="clearCanvas('sig_r1')">清除重新簽名</button>
+      </div>
+      <p style="margin-top: 8px;">
+        日期：民國 <input type="number" class="input-short" id="r1_sig_y"> 年 <input type="number" class="input-short" id="r1_sig_m"> 月 <input type="number" class="input-short" id="r1_sig_d"> 日
       </p>
     </div>
   </div>
@@ -637,7 +638,7 @@
   const allCanvasIds = ['sig_c1', 'sig_c2', 'sig_p1', 'sig_p2', 'sig_r1', 'sig_r2'];
   allCanvasIds.forEach(id => initSignatureCanvas(id));
 
-  // 列印前備置工作（將動態欄位內容轉為固定文字，防內容遺失）
+  // 列印前備置工作
   function prepareAndPrint() {
     // 1. 轉化 Canvas 簽名畫布為高畫質圖片
     allCanvasIds.forEach(id => {
