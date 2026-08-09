@@ -34,7 +34,7 @@
       margin-bottom: 24px;
       color: #111;
       letter-spacing: 1px;
-      border: none !important; /* 確保無分隔線 */
+      border: none !important;
       padding: 0 !important;
     }
 
@@ -191,7 +191,7 @@
     }
 
     /* ===================================================
-       渲染 PDF 時的專屬優化樣式
+       渲染 PDF 專屬穩定樣式（解決內容消失問題）
        =================================================== */
     .rendering-pdf .action-bar, 
     .rendering-pdf .btn-clear {
@@ -206,15 +206,11 @@
       display: inline-block !important;
     }
 
-    .rendering-pdf input[type="text"], 
-    .rendering-pdf input[type="number"], 
-    .rendering-pdf input[type="date"], 
-    .rendering-pdf select {
-      border: none !important;
-      background: transparent !important;
-      appearance: none;
-      -webkit-appearance: none;
-      padding: 0 !important;
+    /* 將動態填寫文字固定渲染，防止 html2canvas 遺漏 */
+    .pdf-text-val {
+      font-weight: bold;
+      text-decoration: underline;
+      padding: 0 4px;
     }
   </style>
 </head>
@@ -363,6 +359,7 @@
   <div class="section-title">二、健康篩檢</div>
   <p>請依目前或過去的健康狀況勾選：</p>
 
+  <!-- 已取消所有預設勾選 (無 checked) -->
   <table class="parq-table">
     <thead>
       <tr>
@@ -375,47 +372,47 @@
       <tr>
         <td>1. 醫師是否曾告知您患有心臟疾病，或曾被要求只能進行醫師建議的運動？</td>
         <td class="center"><input type="radio" name="parq1" value="yes"></td>
-        <td class="center"><input type="radio" name="parq1" value="no" checked></td>
+        <td class="center"><input type="radio" name="parq1" value="no"></td>
       </tr>
       <tr>
         <td>2. 進行身體活動時，是否曾出現胸部疼痛或不舒服？</td>
         <td class="center"><input type="radio" name="parq2" value="yes"></td>
-        <td class="center"><input type="radio" name="parq2" value="no" checked></td>
+        <td class="center"><input type="radio" name="parq2" value="no"></td>
       </tr>
       <tr>
         <td>3. 最近是否曾在沒有明顯原因的情況下失去平衡、暈眩或失去意識？</td>
         <td class="center"><input type="radio" name="parq3" value="yes"></td>
-        <td class="center"><input type="radio" name="parq3" value="no" checked></td>
+        <td class="center"><input type="radio" name="parq3" value="no"></td>
       </tr>
       <tr>
         <td>4. 是否有骨骼、關節或肌肉問題，可能因運動而惡化？</td>
         <td class="center"><input type="radio" name="parq4" value="yes"></td>
-        <td class="center"><input type="radio" name="parq4" value="no" checked></td>
+        <td class="center"><input type="radio" name="parq4" value="no"></td>
       </tr>
       <tr>
         <td>5. 是否有醫師診斷之高血壓或其他慢性疾病？</td>
         <td class="center"><input type="radio" name="parq5" value="yes"></td>
-        <td class="center"><input type="radio" name="parq5" value="no" checked></td>
+        <td class="center"><input type="radio" name="parq5" value="no"></td>
       </tr>
       <tr>
         <td>6. 是否正在服用可能影響運動能力或心血管功能的藥物？</td>
         <td class="center"><input type="radio" name="parq6" value="yes"></td>
-        <td class="center"><input type="radio" name="parq6" value="no" checked></td>
+        <td class="center"><input type="radio" name="parq6" value="no"></td>
       </tr>
       <tr>
         <td>7. 是否曾接受心臟、骨骼、關節或其他重大手術？</td>
         <td class="center"><input type="radio" name="parq7" value="yes"></td>
-        <td class="center"><input type="radio" name="parq7" value="no" checked></td>
+        <td class="center"><input type="radio" name="parq7" value="no"></td>
       </tr>
       <tr>
         <td>8. 女性學員是否目前懷孕、近期生產或有其他需特別注意之情況？</td>
         <td class="center"><input type="radio" name="parq8" value="yes"></td>
-        <td class="center"><input type="radio" name="parq8" value="no" checked></td>
+        <td class="center"><input type="radio" name="parq8" value="no"></td>
       </tr>
       <tr>
         <td>9. 是否有其他未列於上述問題，但您認為教練應知道的健康狀況？</td>
         <td class="center"><input type="radio" name="parq9" value="yes"></td>
-        <td class="center"><input type="radio" name="parq9" value="no" checked></td>
+        <td class="center"><input type="radio" name="parq9" value="no"></td>
       </tr>
     </tbody>
   </table>
@@ -605,9 +602,9 @@
   const allCanvasIds = ['sig_c1', 'sig_c2', 'sig_p1', 'sig_p2', 'sig_r1', 'sig_r2'];
   allCanvasIds.forEach(id => initSignatureCanvas(id));
 
-  // 使用 html2pdf.js 直接產出並下載 PDF 檔
+  // 強化版：直接下載 PDF，徹底解決內容遺失與文字消失問題
   function generatePDF() {
-    // 1. 將 Canvas 簽名轉化為圖片
+    // 1. 轉化 Canvas 簽名畫布為高畫質圖片
     allCanvasIds.forEach(id => {
       const canvas = document.getElementById(id);
       const img = document.getElementById(id + '_img');
@@ -617,13 +614,26 @@
     });
 
     const element = document.getElementById('pdf-content');
-    
-    // 2. 切換成 PDF 渲染模式（觸發 CSS 隱藏按鈕與調成無邊框）
+
+    // 2. 將所有輸入框 DOM 的動態填寫內容轉化為固定 textSpan 節點，防止渲染時丟失文字
+    const tempSpans = [];
+    const inputs = element.querySelectorAll('input[type="text"], input[type="number"], input[type="date"]');
+    inputs.forEach(input => {
+      const val = input.value || '';
+      const span = document.createElement('span');
+      span.className = 'pdf-text-val';
+      span.innerText = val ? val : '＿＿';
+      input.parentNode.insertBefore(span, input);
+      input.style.display = 'none';
+      tempSpans.push({ input, span });
+    });
+
+    // 3. 切換渲染狀態
     document.body.classList.add('rendering-pdf');
 
-    // 3. 設定 PDF 下載參數
+    // 4. PDF 匯出參數
     const opt = {
-      margin:       [10, 15, 10, 15], // [上, 左, 下, 右] mm
+      margin:       [10, 12, 10, 12],
       filename:     '一對一健身教練課程服務契約及健康風險確認書.pdf',
       image:        { type: 'jpeg', quality: 0.98 },
       html2canvas:  { scale: 2, useCORS: true, logging: false },
@@ -631,9 +641,20 @@
       pagebreak:    { mode: ['css', 'legacy'] }
     };
 
-    // 4. 執行轉檔與下載，結束後還原網頁狀態
+    // 5. 生成並下載，之後恢復原本動態表單與 Canvas 操作狀態
     html2pdf().set(opt).from(element).save().then(() => {
       document.body.classList.remove('rendering-pdf');
+      tempSpans.forEach(item => {
+        item.span.remove();
+        item.input.style.display = '';
+      });
+    }).catch(err => {
+      console.error(err);
+      document.body.classList.remove('rendering-pdf');
+      tempSpans.forEach(item => {
+        item.span.remove();
+        item.input.style.display = '';
+      });
     });
   }
 </script>
