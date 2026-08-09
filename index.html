@@ -34,7 +34,7 @@
     h2 {
       text-align: center;
       font-size: 18px;
-      margin-top: 35px;
+      margin-top: 25px;
       margin-bottom: 15px;
       color: #222;
       border-bottom: 2px solid #333;
@@ -43,13 +43,13 @@
 
     p, li {
       font-size: 14px;
-      line-height: 1.8;
+      line-height: 1.7;
       margin-bottom: 8px;
     }
 
     .section-title {
       font-weight: bold;
-      margin-top: 16px;
+      margin-top: 14px;
       font-size: 15px;
       color: #000;
     }
@@ -86,7 +86,7 @@
 
     .parq-table th, .parq-table td {
       border: 1px solid #999;
-      padding: 8px;
+      padding: 6px 8px;
       text-align: left;
     }
 
@@ -117,13 +117,13 @@
     .sig-block {
       display: inline-block;
       vertical-align: top;
-      margin-top: 8px;
+      margin-top: 6px;
     }
 
     .sig-canvas {
       border: 1px dashed #999;
       background-color: #fafafa;
-      touch-action: none; /* 防止平板簽名時畫面滾動 */
+      touch-action: none;
       cursor: crosshair;
       border-radius: 4px;
     }
@@ -147,11 +147,13 @@
       vertical-align: middle;
     }
 
-    /* 簽署欄排版 */
+    /* 簽署欄排版 - 防止跨頁斷開 */
     .sign-section {
-      margin-top: 25px;
+      margin-top: 20px;
       display: flex;
       justify-content: space-between;
+      page-break-inside: avoid; /* 強制簽名區塊保持在同一頁 */
+      break-inside: avoid;
     }
 
     .sign-col {
@@ -160,6 +162,7 @@
 
     .page-break {
       page-break-before: always;
+      break-before: page;
     }
 
     /* 操作按鈕條 */
@@ -191,9 +194,14 @@
     }
 
     /* ===================================================
-       列印 / 轉檔 PDF 專屬樣式（消除網頁與PDF落差關鍵）
+       列印 / 轉檔 PDF 專屬樣式
        =================================================== */
     @media print {
+      @page {
+        size: A4;
+        margin: 1.2cm 1.5cm; /* 控制邊距，隱藏瀏覽器預設頁首頁尾資訊 */
+      }
+
       body {
         background-color: #fff;
         padding: 0;
@@ -234,12 +242,12 @@
         -webkit-appearance: checkbox !important;
       }
 
-      /* 隱藏下拉選單箭頭 */
       select::-ms-expand { display: none; }
-
-      @page {
-        size: A4;
-        margin: 1.5cm;
+      
+      /* 防止簽名區域與標題被裁切開來 */
+      .sign-section, .section-title {
+        page-break-inside: avoid;
+        break-inside: avoid;
       }
     }
   </style>
@@ -289,7 +297,7 @@
     付款方式：
     <label class="check-item"><input type="checkbox" id="pay_cash"> 現金</label>
     <label class="check-item"><input type="checkbox" id="pay_transfer"> 銀行轉帳</label>
-    <label class="check-item"><input type="checkbox" id="pay_other_check" onchange="togglePayOther(this)"> 其他：<input type="text" class="input-med" id="pay_other_text"></label><br>
+    <label class="check-item"><input type="checkbox" id="pay_other_check"> 其他：<input type="text" class="input-med" id="pay_other_text"></label><br>
     甲方收款後應提供乙方付款證明或相關紀錄。
   </p>
 
@@ -326,7 +334,7 @@
   <p>因天災、政府命令、重大疫情或其他不可歸責於甲乙雙方之事由，致課程無法進行時，雙方應協議延期、補課或依相關法令處理。</p>
 
   <div class="section-title">第九條 個人資料</div>
-  <p>甲方因提供課程服務所蒐集之乙方個人資料，僅於課程管理、聯絡、收費、健康安全及依法應辦理事項之必要範圍內使用。除法律另有規定或經乙方同意外，甲方不得任意提供予第三人。</p>
+  <p>甲方因提供課程服務所蒐集之乙方個人資料，僅於課程管理、聯絡、收費、健康安全及依法應辦理事項之必要範圍內使用。除法律另有規定或經乙方同意外，甲方不得任意提供予雙方。</p>
 
   <div class="section-title">第十條 照片及影片</div>
   <p>甲方如欲拍攝或使用乙方照片、影片作為社群媒體、廣告或其他商業宣傳用途，應另取得乙方明確同意。乙方不同意時，不影響其購買及接受課程之權利。</p>
@@ -343,15 +351,16 @@
   <div class="section-title">第十三條 契約份數</div>
   <p>本契約一式二份，由甲乙雙方各執一份為憑。</p>
 
+  <!-- 簽署區塊（已設定自動防止跨頁斷開） -->
   <div class="sign-section">
     <div class="sign-col">
       <p><strong>甲方（教練）簽名：</strong></p>
       <div class="sig-block">
-        <canvas id="sig_c1" class="sig-canvas" width="300" height="110"></canvas>
+        <canvas id="sig_c1" class="sig-canvas" width="300" height="100"></canvas>
         <img id="sig_c1_img" class="signature-img" alt="甲方簽名">
         <button type="button" class="btn-clear" onclick="clearCanvas('sig_c1')">清除重新簽名</button>
       </div>
-      <p style="margin-top: 10px;">
+      <p style="margin-top: 8px;">
         簽約日期：民國 <input type="number" class="input-short" id="c1_y"> 年 <input type="number" class="input-short" id="c1_m"> 月 <input type="number" class="input-short" id="c1_d"> 日
       </p>
     </div>
@@ -359,11 +368,11 @@
     <div class="sign-col">
       <p><strong>乙方（學員）簽名：</strong></p>
       <div class="sig-block">
-        <canvas id="sig_c2" class="sig-canvas" width="300" height="110"></canvas>
+        <canvas id="sig_c2" class="sig-canvas" width="300" height="100"></canvas>
         <img id="sig_c2_img" class="signature-img" alt="乙方簽名">
         <button type="button" class="btn-clear" onclick="clearCanvas('sig_c2')">清除重新簽名</button>
       </div>
-      <p style="margin-top: 10px;">
+      <p style="margin-top: 8px;">
         簽約日期：民國 <input type="number" class="input-short" id="c2_y"> 年 <input type="number" class="input-short" id="c2_m"> 月 <input type="number" class="input-short" id="c2_d"> 日
       </p>
     </div>
@@ -447,8 +456,7 @@
 
   <div class="section-title">三、補充說明</div>
   <p>
-    若上述任一問題回答「是」，請說明：<br>
-    目前疾病／傷病／用藥：<br>
+    若上述任一問題回答「是」，請說明目前疾病／傷病／用藥：<br>
     <input type="text" class="input-full" id="parq_notes" placeholder="無則填寫『無』">
   </p>
 
@@ -463,11 +471,11 @@
     <div class="sign-col">
       <p><strong>學員簽名：</strong></p>
       <div class="sig-block">
-        <canvas id="sig_p1" class="sig-canvas" width="300" height="110"></canvas>
+        <canvas id="sig_p1" class="sig-canvas" width="300" height="100"></canvas>
         <img id="sig_p1_img" class="signature-img" alt="學員簽名">
         <button type="button" class="btn-clear" onclick="clearCanvas('sig_p1')">清除重新簽名</button>
       </div>
-      <p style="margin-top: 10px;">
+      <p style="margin-top: 8px;">
         日期：民國 <input type="number" class="input-short" id="p1_sig_y"> 年 <input type="number" class="input-short" id="p1_sig_m"> 月 <input type="number" class="input-short" id="p1_sig_d"> 日
       </p>
     </div>
@@ -475,11 +483,11 @@
     <div class="sign-col">
       <p><strong>教練確認：</strong></p>
       <div class="sig-block">
-        <canvas id="sig_p2" class="sig-canvas" width="300" height="110"></canvas>
+        <canvas id="sig_p2" class="sig-canvas" width="300" height="100"></canvas>
         <img id="sig_p2_img" class="signature-img" alt="教練簽名">
         <button type="button" class="btn-clear" onclick="clearCanvas('sig_p2')">清除重新簽名</button>
       </div>
-      <p style="margin-top: 10px;">
+      <p style="margin-top: 8px;">
         日期：民國 <input type="number" class="input-short" id="p2_sig_y"> 年 <input type="number" class="input-short" id="p2_sig_m"> 月 <input type="number" class="input-short" id="p2_sig_d"> 日
       </p>
     </div>
@@ -517,11 +525,11 @@
     <div class="sign-col">
       <p><strong>學員簽名：</strong></p>
       <div class="sig-block">
-        <canvas id="sig_r1" class="sig-canvas" width="300" height="110"></canvas>
+        <canvas id="sig_r1" class="sig-canvas" width="300" height="100"></canvas>
         <img id="sig_r1_img" class="signature-img" alt="學員簽名">
         <button type="button" class="btn-clear" onclick="clearCanvas('sig_r1')">清除重新簽名</button>
       </div>
-      <p style="margin-top: 10px;">
+      <p style="margin-top: 8px;">
         日期：民國 <input type="number" class="input-short" id="r1_sig_y"> 年 <input type="number" class="input-short" id="r1_sig_m"> 月 <input type="number" class="input-short" id="r1_sig_d"> 日
       </p>
     </div>
@@ -529,11 +537,11 @@
     <div class="sign-col">
       <p><strong>教練簽名：</strong></p>
       <div class="sig-block">
-        <canvas id="sig_r2" class="sig-canvas" width="300" height="110"></canvas>
+        <canvas id="sig_r2" class="sig-canvas" width="300" height="100"></canvas>
         <img id="sig_r2_img" class="signature-img" alt="教練簽名">
         <button type="button" class="btn-clear" onclick="clearCanvas('sig_r2')">清除重新簽名</button>
       </div>
-      <p style="margin-top: 10px;">
+      <p style="margin-top: 8px;">
         日期：民國 <input type="number" class="input-short" id="r2_sig_y"> 年 <input type="number" class="input-short" id="r2_sig_m"> 月 <input type="number" class="input-short" id="r2_sig_d"> 日
       </p>
     </div>
@@ -633,7 +641,6 @@
 
   // 準備列印並開啟瀏覽器另存 PDF 視窗
   function prepareAndPrint() {
-    // 將所有 Canvas 畫布轉化為 Img DataURL
     allCanvasIds.forEach(id => {
       const canvas = document.getElementById(id);
       const img = document.getElementById(id + '_img');
@@ -642,7 +649,6 @@
       }
     });
 
-    // 觸發瀏覽器列印功能 (選擇「另存為 PDF」即可)
     window.print();
   }
 </script>
