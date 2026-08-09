@@ -1,24 +1,651 @@
-<div class="section-title">第四條：健康狀況評估與風險聲明</div>
-  <p><strong>健康狀況評估：</strong>甲方應於簽約前誠實告知乙方其個人健康狀況。請勾選以下符合甲方之情況：</p>
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>一對一健身教練課程服務契約及健康風險確認書</title>
+  <style>
+    /* 全局樣式設定 */
+    body {
+      font-family: "Microsoft JhengHei", "Calibri", sans-serif;
+      background-color: #f4f6f9;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .contract-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 40px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      border-radius: 8px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 22px;
+      margin-bottom: 20px;
+      color: #111;
+      letter-spacing: 1px;
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 18px;
+      margin-top: 35px;
+      margin-bottom: 15px;
+      color: #222;
+      border-bottom: 2px solid #333;
+      padding-bottom: 8px;
+    }
+
+    p, li {
+      font-size: 14px;
+      line-height: 1.8;
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-weight: bold;
+      margin-top: 16px;
+      font-size: 15px;
+      color: #000;
+    }
+
+    /* 網頁輸入框樣式 */
+    input[type="text"], input[type="number"], input[type="date"], select {
+      border: none;
+      border-bottom: 1px solid #666;
+      background: #fdfdfd;
+      padding: 2px 6px;
+      font-family: "Microsoft JhengHei", "Calibri", sans-serif;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input:focus {
+      border-bottom: 2px solid #0056b3;
+      background: #f0f7ff;
+    }
+
+    .input-short { width: 50px; text-align: center; }
+    .input-med { width: 130px; }
+    .input-long { width: 220px; }
+    .input-full { width: 100%; box-sizing: border-box; }
+
+    /* PAR-Q 表格樣式 */
+    .parq-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+      font-size: 13.5px;
+    }
+
+    .parq-table th, .parq-table td {
+      border: 1px solid #999;
+      padding: 8px;
+      text-align: left;
+    }
+
+    .parq-table th {
+      background-color: #f0f0f0;
+      text-align: center;
+    }
+
+    .parq-table td.center {
+      text-align: center;
+      width: 50px;
+    }
+
+    .check-item {
+      display: inline-block;
+      margin-bottom: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .check-item input[type="checkbox"], .check-item input[type="radio"] {
+      transform: scale(1.1);
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+
+    /* 簽名板區域 */
+    .sig-block {
+      display: inline-block;
+      vertical-align: top;
+      margin-top: 8px;
+    }
+
+    .sig-canvas {
+      border: 1px dashed #999;
+      background-color: #fafafa;
+      touch-action: none; /* 防止平板簽名時畫面滾動 */
+      cursor: crosshair;
+      border-radius: 4px;
+    }
+
+    .btn-clear {
+      display: block;
+      margin-top: 4px;
+      padding: 2px 8px;
+      font-size: 12px;
+      background: #e0e0e0;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    .btn-clear:hover { background: #ccc; }
+
+    .signature-img {
+      display: none;
+      max-height: 60px;
+      vertical-align: middle;
+    }
+
+    /* 簽署欄排版 */
+    .sign-section {
+      margin-top: 25px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .sign-col {
+      width: 48%;
+    }
+
+    .page-break {
+      page-break-before: always;
+    }
+
+    /* 操作按鈕條 */
+    .action-bar {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 12px 20px;
+      border-radius: 30px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      backdrop-filter: blur(5px);
+    }
+
+    .btn-submit {
+      background-color: #0056b3;
+      color: white;
+      border: none;
+      padding: 10px 24px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 20px;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,86,179,0.3);
+    }
+
+    .btn-submit:hover {
+      background-color: #004085;
+    }
+
+    /* ===================================================
+       列印 / 轉檔 PDF 專屬樣式（消除網頁與PDF落差關鍵）
+       =================================================== */
+    @media print {
+      body {
+        background-color: #fff;
+        padding: 0;
+      }
+
+      .contract-container {
+        box-shadow: none;
+        padding: 0;
+        width: 100%;
+        max-width: 100%;
+      }
+
+      .action-bar, .btn-clear {
+        display: none !important;
+      }
+
+      /* 隱藏 Canvas，改顯示渲染出的簽名圖片 */
+      .sig-canvas {
+        display: none !important;
+      }
+
+      .signature-img {
+        display: inline-block !important;
+      }
+
+      /* 將輸入框轉為無邊框純文字顯示效果 */
+      input[type="text"], input[type="number"], input[type="date"], select {
+        border: none !important;
+        background: transparent !important;
+        appearance: none;
+        -webkit-appearance: none;
+        padding: 0 !important;
+      }
+
+      /* 確保核取方塊與單選鈕在列印時清晰可見 */
+      input[type="checkbox"], input[type="radio"] {
+        appearance: auto !important;
+        -webkit-appearance: checkbox !important;
+      }
+
+      /* 隱藏下拉選單箭頭 */
+      select::-ms-expand { display: none; }
+
+      @page {
+        size: A4;
+        margin: 1.5cm;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="contract-container">
   
-  <div class="health-checklist">
-    <label class="check-item"><input type="checkbox" name="health" value="cvd"> 1. 心血管疾病 / 高血壓 / 胸悶胸痛歷史</label><br>
-    <label class="check-item"><input type="checkbox" name="health" value="joint"> 2. 骨骼、關節舊傷或脊椎相關問題（如椎間盤突出、習慣性脫臼等）</label><br>
-    <label class="check-item"><input type="checkbox" name="health" value="surgery"> 3. 近期接受過手術或尚在恢復期</label><br>
-    <label class="check-item"><input type="checkbox" name="health" value="pregnant"> 4. 懷孕中或產後復健期</label><br>
-    <label class="check-item"><input type="checkbox" name="health" value="chronic"> 5. 其他慢性疾病（如糖尿病、氣喘、癲癇等）</label><br>
-    <label class="check-item"><input type="checkbox" name="health" value="none"> 6. 無上述狀況，身體健康適合進行體能訓練</label>
+  <!-- 第一部分：一對一健身教練課程服務契約 -->
+  <h1>一對一健身教練課程服務契約</h1>
+
+  <p>
+    <strong>立契約書人：</strong><br>
+    <strong>甲方（教練）：</strong><input type="text" class="input-med" id="p1_name">
+    <strong>身分證字號：</strong><input type="text" class="input-med" id="p1_id"><br>
+    <strong>電話：</strong><input type="text" class="input-med" id="p1_phone">
+    <strong>地址：</strong><input type="text" class="input-long" id="p1_address"><br>
+    <strong>乙方（學員）：</strong><input type="text" class="input-med" id="p2_name" oninput="syncStudentName(this.value)">
+    <strong>身分證字號：</strong><input type="text" class="input-med" id="p2_id"><br>
+    <strong>電話：</strong><input type="text" class="input-med" id="p2_phone">
+    <strong>地址：</strong><input type="text" class="input-long" id="p2_address"><br>
+    <strong>乙方緊急聯絡人：</strong><input type="text" class="input-med" id="p2_emerg_name">
+    <strong>關係：</strong><input type="text" class="input-short" id="p2_emerg_rel">
+    <strong>電話：</strong><input type="text" class="input-med" id="p2_emerg_phone">
+  </p>
+
+  <p>甲乙雙方就一對一健身教練課程服務，約定如下：</p>
+
+  <div class="section-title">第一條 課程方案</div>
+  <p>
+    乙方選擇以下課程方案：<br>
+    <label class="check-item"><input type="radio" name="plan" value="A"> <strong>A方案：</strong>10堂，每堂60分鐘，課程總價新臺幣13,000元。</label><br>
+    <label class="check-item"><input type="radio" name="plan" value="B"> <strong>B方案：</strong>20堂，每堂60分鐘，課程總價新臺幣24,000元。</label><br>
+    <label class="check-item"><input type="radio" name="plan" value="custom"> <strong>其他自訂方案：</strong>共 <input type="number" class="input-short" id="custom_lessons"> 堂，每堂 <input type="number" class="input-short" id="custom_min" value="60"> 分鐘，總價新臺幣 <input type="number" class="input-med" id="custom_price"> 元整。</label><br>
+    實際課程堂數、單堂時間及費用，以本契約勾選及雙方確認內容為準。
+  </p>
+
+  <div class="section-title">第二條 服務內容</div>
+  <p>
+    1. 甲方提供一對一健身指導服務，包括動作教學、訓練安排、運動安全提醒及依乙方狀況所提供之一般性訓練建議。<br>
+    2. 健身教練服務不屬於醫療行為，甲方不得從事診斷、治療或其他依法須由醫療專業人員執行之行為。
+  </p>
+
+  <div class="section-title">第三條 付款方式</div>
+  <p>
+    乙方應於課程開始前依約支付全部課程費用。<br>
+    付款方式：
+    <label class="check-item"><input type="checkbox" id="pay_cash"> 現金</label>
+    <label class="check-item"><input type="checkbox" id="pay_transfer"> 銀行轉帳</label>
+    <label class="check-item"><input type="checkbox" id="pay_other_check" onchange="togglePayOther(this)"> 其他：<input type="text" class="input-med" id="pay_other_text"></label><br>
+    甲方收款後應提供乙方付款證明或相關紀錄。
+  </p>
+
+  <div class="section-title">第四條 課程預約及取消</div>
+  <p>
+    1. 課程採預約制，實際上課時間由甲乙雙方協議。<br>
+    2. 乙方如需取消或改期，應於約定上課時間前至少24小時通知甲方。<br>
+    3. 如乙方未依約通知而無故缺席，是否扣除課程堂數，應依雙方另行約定及相關法令辦理。<br>
+    4. 如因甲方因素無法授課，甲方應與乙方協議改期，不得無故扣除乙方課程堂數。
+  </p>
+
+  <div class="section-title">第五條 課程有效期間</div>
+  <p>
+    1. 10堂方案：自契約成立日起 <input type="number" class="input-short" id="expire_m1" value="3"> 個月內使用完畢。<br>
+    2. 20堂方案：自契約成立日起 <input type="number" class="input-short" id="expire_m2" value="6"> 個月內使用完畢。<br>
+    3. 如因傷病、懷孕、重大事故或其他合理事由確有無法於期限內完成課程之情形，雙方得協議展延。
+  </p>
+
+  <div class="section-title">第六條 健康狀況及安全</div>
+  <p>
+    1. 乙方應於開始訓練前如實填寫健康篩檢表，並主動告知甲方既有疾病、傷病、用藥、手術史或其他可能影響運動安全之事項。<br>
+    2. 如乙方有不適合運動之健康狀況，應先取得醫師適當評估或許可。<br>
+    3. 訓練過程中如出現胸痛、呼吸困難、暈眩、噁心、異常疼痛或其他身體不適，乙方應立即告知甲方並停止運動。
+  </p>
+
+  <div class="section-title">第七條 退費及契約終止</div>
+  <p>
+    1. 乙方得依相關法令及本契約約定申請終止契約及退費。<br>
+    2. 退費金額應依實際已使用課程、契約約定及當時適用之相關法令計算，不得以本契約約定排除乙方依法享有之權利。<br>
+    3. 甲方如有重大違約情形，乙方得依相關法令主張解除或終止契約及退款。
+  </p>
+
+  <div class="section-title">第八條 不可歸責事由</div>
+  <p>因天災、政府命令、重大疫情或其他不可歸責於甲乙雙方之事由，致課程無法進行時，雙方應協議延期、補課或依相關法令處理。</p>
+
+  <div class="section-title">第九條 個人資料</div>
+  <p>甲方因提供課程服務所蒐集之乙方個人資料，僅於課程管理、聯絡、收費、健康安全及依法應辦理事項之必要範圍內使用。除法律另有規定或經乙方同意外，甲方不得任意提供予第三人。</p>
+
+  <div class="section-title">第十條 照片及影片</div>
+  <p>甲方如欲拍攝或使用乙方照片、影片作為社群媒體、廣告或其他商業宣傳用途，應另取得乙方明確同意。乙方不同意時，不影響其購買及接受課程之權利。</p>
+
+  <div class="section-title">第十一條 契約審閱</div>
+  <p>乙方確認於簽約前已充分閱讀本契約內容，並有合理期間審閱契約條款；甲方不得以未提供審閱機會為由限制乙方依法享有之權利。</p>
+
+  <div class="section-title">第十二條 其他約定</div>
+  <p>
+    1. 本契約未盡事宜，依中華民國相關法令辦理。<br>
+    2. 如本契約部分條款與強制或禁止規定牴觸，該部分依相關法令處理，其餘條款仍有效。
+  </p>
+
+  <div class="section-title">第十三條 契約份數</div>
+  <p>本契約一式二份，由甲乙雙方各執一份為憑。</p>
+
+  <div class="sign-section">
+    <div class="sign-col">
+      <p><strong>甲方（教練）簽名：</strong></p>
+      <div class="sig-block">
+        <canvas id="sig_c1" class="sig-canvas" width="300" height="110"></canvas>
+        <img id="sig_c1_img" class="signature-img" alt="甲方簽名">
+        <button type="button" class="btn-clear" onclick="clearCanvas('sig_c1')">清除重新簽名</button>
+      </div>
+      <p style="margin-top: 10px;">
+        簽約日期：民國 <input type="number" class="input-short" id="c1_y"> 年 <input type="number" class="input-short" id="c1_m"> 月 <input type="number" class="input-short" id="c1_d"> 日
+      </p>
+    </div>
+
+    <div class="sign-col">
+      <p><strong>乙方（學員）簽名：</strong></p>
+      <div class="sig-block">
+        <canvas id="sig_c2" class="sig-canvas" width="300" height="110"></canvas>
+        <img id="sig_c2_img" class="signature-img" alt="乙方簽名">
+        <button type="button" class="btn-clear" onclick="clearCanvas('sig_c2')">清除重新簽名</button>
+      </div>
+      <p style="margin-top: 10px;">
+        簽約日期：民國 <input type="number" class="input-short" id="c2_y"> 年 <input type="number" class="input-short" id="c2_m"> 月 <input type="number" class="input-short" id="c2_d"> 日
+      </p>
+    </div>
   </div>
 
-  <p style="margin-top: 10px;">
-    <strong>健康狀況詳細說明/備註：</strong>（若有勾選 1~5 項，請簡述狀況或醫師醫囑）<br>
-    <input type="text" class="input-long" style="width: 100%;" id="health_notes" placeholder="無則填寫『無』">
+
+  <!-- 第二部分：運動前健康篩檢表（PAR-Q） -->
+  <div class="page-break"></div>
+  <h2>運動前健康篩檢表（PAR-Q）</h2>
+
+  <div class="section-title">一、基本資料</div>
+  <p>
+    <strong>姓名：</strong><input type="text" class="input-med" id="parq_name">
+    <strong>出生年月日：</strong><input type="date" id="parq_dob"><br>
+    <strong>電話：</strong><input type="text" class="input-med" id="parq_phone">
+    <strong>填寫日期：</strong>民國 <input type="number" class="input-short" id="parq_y"> 年 <input type="number" class="input-short" id="parq_m"> 月 <input type="number" class="input-short" id="parq_d"> 日<br>
+    <strong>緊急聯絡人：</strong><input type="text" class="input-med" id="parq_emerg_name">
+    <strong>關係：</strong><input type="text" class="input-short" id="parq_emerg_rel">
+    <strong>緊急聯絡電話：</strong><input type="text" class="input-med" id="parq_emerg_phone">
+  </p>
+
+  <div class="section-title">二、健康篩檢</div>
+  <p>請依目前或過去的健康狀況勾選：</p>
+
+  <table class="parq-table">
+    <thead>
+      <tr>
+        <th>問題</th>
+        <th style="width: 45px;">是</th>
+        <th style="width: 45px;">否</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1. 醫師是否曾告知您患有心臟疾病，或曾被要求只能進行醫師建議的運動？</td>
+        <td class="center"><input type="radio" name="parq1" value="yes"></td>
+        <td class="center"><input type="radio" name="parq1" value="no" checked></td>
+      </tr>
+      <tr>
+        <td>2. 進行身體活動時，是否曾出現胸部疼痛或不舒服？</td>
+        <td class="center"><input type="radio" name="parq2" value="yes"></td>
+        <td class="center"><input type="radio" name="parq2" value="no" checked></td>
+      </tr>
+      <tr>
+        <td>3. 最近是否曾在沒有明顯原因的情況下失去平衡、暈眩或失去意識？</td>
+        <td class="center"><input type="radio" name="parq3" value="yes"></td>
+        <td class="center"><input type="radio" name="parq3" value="no" checked></td>
+      </tr>
+      <tr>
+        <td>4. 是否有骨骼、關節或肌肉問題，可能因運動而惡化？</td>
+        <td class="center"><input type="radio" name="parq4" value="yes"></td>
+        <td class="center"><input type="radio" name="parq4" value="no" checked></td>
+      </tr>
+      <tr>
+        <td>5. 是否有醫師診斷之高血壓或其他慢性疾病？</td>
+        <td class="center"><input type="radio" name="parq5" value="yes"></td>
+        <td class="center"><input type="radio" name="parq5" value="no" checked></td>
+      </tr>
+      <tr>
+        <td>6. 是否正在服用可能影響運動能力或心血管功能的藥物？</td>
+        <td class="center"><input type="radio" name="parq6" value="yes"></td>
+        <td class="center"><input type="radio" name="parq6" value="no" checked></td>
+      </tr>
+      <tr>
+        <td>7. 是否曾接受心臟、骨骼、關節或其他重大手術？</td>
+        <td class="center"><input type="radio" name="parq7" value="yes"></td>
+        <td class="center"><input type="radio" name="parq7" value="no" checked></td>
+      </tr>
+      <tr>
+        <td>8. 女性學員是否目前懷孕、近期生產或有其他需特別注意之情況？</td>
+        <td class="center"><input type="radio" name="parq8" value="yes"></td>
+        <td class="center"><input type="radio" name="parq8" value="no" checked></td>
+      </tr>
+      <tr>
+        <td>9. 是否有其他未列於上述問題，但您認為教練應知道的健康狀況？</td>
+        <td class="center"><input type="radio" name="parq9" value="yes"></td>
+        <td class="center"><input type="radio" name="parq9" value="no" checked></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="section-title">三、補充說明</div>
+  <p>
+    若上述任一問題回答「是」，請說明：<br>
+    目前疾病／傷病／用藥：<br>
+    <input type="text" class="input-full" id="parq_notes" placeholder="無則填寫『無』">
+  </p>
+
+  <div class="section-title">四、運動安全聲明</div>
+  <p>
+    1. 本人確認上述資料係依目前所知之健康狀況據實填寫。<br>
+    2. 本人了解健身運動具有一定程度之身體活動風險，並同意於運動過程中如出現胸痛、呼吸困難、暈眩、異常疼痛或其他不適，立即通知教練並停止運動。<br>
+    3. 如有疾病、傷病、懷孕或其他可能影響運動安全之情形，本人了解應先向醫師或適當醫療專業人員諮詢。
+  </p>
+
+  <div class="sign-section">
+    <div class="sign-col">
+      <p><strong>學員簽名：</strong></p>
+      <div class="sig-block">
+        <canvas id="sig_p1" class="sig-canvas" width="300" height="110"></canvas>
+        <img id="sig_p1_img" class="signature-img" alt="學員簽名">
+        <button type="button" class="btn-clear" onclick="clearCanvas('sig_p1')">清除重新簽名</button>
+      </div>
+      <p style="margin-top: 10px;">
+        日期：民國 <input type="number" class="input-short" id="p1_sig_y"> 年 <input type="number" class="input-short" id="p1_sig_m"> 月 <input type="number" class="input-short" id="p1_sig_d"> 日
+      </p>
+    </div>
+
+    <div class="sign-col">
+      <p><strong>教練確認：</strong></p>
+      <div class="sig-block">
+        <canvas id="sig_p2" class="sig-canvas" width="300" height="110"></canvas>
+        <img id="sig_p2_img" class="signature-img" alt="教練簽名">
+        <button type="button" class="btn-clear" onclick="clearCanvas('sig_p2')">清除重新簽名</button>
+      </div>
+      <p style="margin-top: 10px;">
+        日期：民國 <input type="number" class="input-short" id="p2_sig_y"> 年 <input type="number" class="input-short" id="p2_sig_m"> 月 <input type="number" class="input-short" id="p2_sig_d"> 日
+      </p>
+    </div>
+  </div>
+
+
+  <!-- 第三部分：身體狀況暨運動風險確認書 -->
+  <div class="page-break"></div>
+  <h2>身體狀況暨運動風險確認書</h2>
+
+  <p>
+    <strong>學員姓名：</strong><input type="text" class="input-med" id="risk_name"><br>
+    <strong>日期：</strong>民國 <input type="number" class="input-short" id="risk_y"> 年 <input type="number" class="input-short" id="risk_m"> 月 <input type="number" class="input-short" id="risk_d"> 日
   </p>
 
   <p>
-    <strong>【風險聲明與確認】</strong><br>
-    <label class="check-item">
-      <input type="checkbox" id="risk_acknowledge" value="agreed">
-      <strong>甲方已充分瞭解：</strong>體能訓練具有一定強度與風險，乙方將依專業進行評估並確保訓練安全。若甲方有特殊醫療狀況，應先尋求專業醫師評估並提供診斷證明。訓練期間若感到任何不適、疼痛或頭暈，甲方應立即主動告知乙方並停止訓練，切勿勉強。
-    </label>
+    本人已向教練如實說明目前已知之健康狀況、傷病及其他可能影響運動安全之事項。<br>
+    本人了解一對一健身訓練可能包含重量訓練、有氧運動、伸展、核心訓練及其他身體活動，運動過程可能產生肌肉痠痛、疲勞、拉傷、扭傷或其他運動相關風險。
   </p>
+
+  <p><strong>本人同意：</strong></p>
+  <p>
+    一、遵守教練之安全指導及動作要求。<br>
+    二、如身體出現異常疼痛、胸悶、胸痛、呼吸困難、暈眩或其他不適，立即停止運動並告知教練。<br>
+    三、不隱瞞可能影響運動安全之疾病、傷病或其他身體狀況。<br>
+    四、如有醫療上的疑慮，應主動尋求醫師或相關醫療專業人員之意見。<br>
+    五、了解教練提供的是一般健身及運動指導，不屬於醫療診斷或治療。
+  </p>
+
+  <p style="font-size: 13px; color: #555; margin-top: 15px;">
+    ※ 本確認書不得解釋為學員放棄依法得主張之權利，亦不免除教練依法應負之責任。
+  </p>
+
+  <div class="sign-section">
+    <div class="sign-col">
+      <p><strong>學員簽名：</strong></p>
+      <div class="sig-block">
+        <canvas id="sig_r1" class="sig-canvas" width="300" height="110"></canvas>
+        <img id="sig_r1_img" class="signature-img" alt="學員簽名">
+        <button type="button" class="btn-clear" onclick="clearCanvas('sig_r1')">清除重新簽名</button>
+      </div>
+      <p style="margin-top: 10px;">
+        日期：民國 <input type="number" class="input-short" id="r1_sig_y"> 年 <input type="number" class="input-short" id="r1_sig_m"> 月 <input type="number" class="input-short" id="r1_sig_d"> 日
+      </p>
+    </div>
+
+    <div class="sign-col">
+      <p><strong>教練簽名：</strong></p>
+      <div class="sig-block">
+        <canvas id="sig_r2" class="sig-canvas" width="300" height="110"></canvas>
+        <img id="sig_r2_img" class="signature-img" alt="教練簽名">
+        <button type="button" class="btn-clear" onclick="clearCanvas('sig_r2')">清除重新簽名</button>
+      </div>
+      <p style="margin-top: 10px;">
+        日期：民國 <input type="number" class="input-short" id="r2_sig_y"> 年 <input type="number" class="input-short" id="r2_sig_m"> 月 <input type="number" class="input-short" id="r2_sig_d"> 日
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<!-- 固定底部的操作列 -->
+<div class="action-bar">
+  <button type="button" class="btn-submit" onclick="prepareAndPrint()">確認文件並儲存為 PDF</button>
+</div>
+
+<script>
+  // 自動填寫當前民國年月日至所有日期欄位
+  const today = new Date();
+  const rocYear = today.getFullYear() - 1911;
+  const month = today.getMonth() + 1;
+  const date = today.getDate();
+
+  const yearIds = ['c1_y', 'c2_y', 'parq_y', 'p1_sig_y', 'p2_sig_y', 'risk_y', 'r1_sig_y', 'r2_sig_y'];
+  const monthIds = ['c1_m', 'c2_m', 'parq_m', 'p1_sig_m', 'p2_sig_m', 'risk_m', 'r1_sig_m', 'r2_sig_m'];
+  const dayIds = ['c1_d', 'c2_d', 'parq_d', 'p1_sig_d', 'p2_sig_d', 'risk_d', 'r1_sig_d', 'r2_sig_d'];
+
+  yearIds.forEach(id => { if(document.getElementById(id)) document.getElementById(id).value = rocYear; });
+  monthIds.forEach(id => { if(document.getElementById(id)) document.getElementById(id).value = month; });
+  dayIds.forEach(id => { if(document.getElementById(id)) document.getElementById(id).value = date; });
+
+  // 自動同步學員姓名至後續表單
+  function syncStudentName(val) {
+    document.getElementById('parq_name').value = val;
+    document.getElementById('risk_name').value = val;
+  }
+
+  // 初始化 Canvas 觸控/滑鼠簽名板
+  function initSignatureCanvas(id) {
+    const canvas = document.getElementById(id);
+    if(!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let isDrawing = false;
+
+    ctx.lineWidth = 2;
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = '#000000';
+
+    function getPos(e) {
+      const rect = canvas.getBoundingClientRect();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      return {
+        x: clientX - rect.left,
+        y: clientY - rect.top
+      };
+    }
+
+    function startDraw(e) {
+      isDrawing = true;
+      const pos = getPos(e);
+      ctx.beginPath();
+      ctx.moveTo(pos.x, pos.y);
+      e.preventDefault();
+    }
+
+    function draw(e) {
+      if (!isDrawing) return;
+      const pos = getPos(e);
+      ctx.lineTo(pos.x, pos.y);
+      ctx.stroke();
+      e.preventDefault();
+    }
+
+    function stopDraw(e) {
+      isDrawing = false;
+    }
+
+    canvas.addEventListener('mousedown', startDraw);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', stopDraw);
+    canvas.addEventListener('mouseleave', stopDraw);
+
+    canvas.addEventListener('touchstart', startDraw, { passive: false });
+    canvas.addEventListener('touchmove', draw, { passive: false });
+    canvas.addEventListener('touchend', stopDraw);
+  }
+
+  function clearCanvas(id) {
+    const canvas = document.getElementById(id);
+    if(!canvas) return;
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const img = document.getElementById(id + '_img');
+    if(img) img.src = '';
+  }
+
+  // 啟動所有簽名板
+  const allCanvasIds = ['sig_c1', 'sig_c2', 'sig_p1', 'sig_p2', 'sig_r1', 'sig_r2'];
+  allCanvasIds.forEach(id => initSignatureCanvas(id));
+
+  // 準備列印並開啟瀏覽器另存 PDF 視窗
+  function prepareAndPrint() {
+    // 將所有 Canvas 畫布轉化為 Img DataURL
+    allCanvasIds.forEach(id => {
+      const canvas = document.getElementById(id);
+      const img = document.getElementById(id + '_img');
+      if(canvas && img) {
+        img.src = canvas.toDataURL('image/png');
+      }
+    });
+
+    // 觸發瀏覽器列印功能 (選擇「另存為 PDF」即可)
+    window.print();
+  }
+</script>
+
+</body>
+</html>
